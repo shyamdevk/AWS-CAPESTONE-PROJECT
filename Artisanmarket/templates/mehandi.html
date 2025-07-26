@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <title>Mehandi Artists</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Elegant Gradient Background */
+        body {
+            background: linear-gradient(135deg, #a18cd1, #fbc2eb); /* Soft purple-pink gradient */
+            font-family: 'Poppins', sans-serif;
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            text-align: center;
+            text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
+            margin-bottom: 40px;
+            color: #fff;
+        }
+
+        /* Card Styling */
+        .card {
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Image Styling */
+        .card-img-top {
+            height: 280px;
+            border-radius: 15px;
+            object-fit: cover;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .card-img-top:hover {
+            transform: scale(1.1);
+        }
+
+        /* Card Body */
+        .card-body {
+            text-align: center;
+            color: #f9f9f9;
+        }
+
+        .card-title {
+            font-size: 1.6rem;
+            font-weight: bold;
+            margin-top: 15px;
+            color: #fff;
+            letter-spacing: 1px;
+        }
+
+        .price {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #5a0b62;
+            margin-top: 10px;
+        }
+
+        .original-price {
+            color: #ff4d4d;
+            text-decoration: line-through;
+            font-size: 1.1rem;
+        }
+
+        /* Contact & WhatsApp Buttons */
+        .contact-links a {
+            color: #fff;
+            font-weight: bold;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .contact-links a:hover {
+            color: #ffdd57;
+        }
+
+        .btn-whatsapp {
+            background-color: #25d366;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            display: inline-block;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+            transition: background 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .btn-whatsapp:hover {
+            background-color: #1ebe57;
+            color: white;
+        }
+
+        /* Responsive Grid */
+        @media (max-width: 768px) {
+            .card {
+                margin-bottom: 25px;
+            }
+
+            .card-img-top {
+                height: 220px;
+            }
+
+            h2 {
+                font-size: 2rem;
+            }
+        }
+
+        /* Container Padding for Larger Screens */
+        @media (min-width: 992px) {
+            .container {
+                padding: 50px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <h2 class="mb-4">Mehandi Artists</h2>
+        <div class="row">
+            {% for item in mehandi %}
+            <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+                <div class="card">
+                    <img src="{% static 'media/' %}{{ item.image1 }}" class="card-img-top" alt="Mehandi Design">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ item.user.username }}</h5>
+                        <p class="contact-links">
+                            <a href="tel:{{ item.user.phone }}">📞 {{ item.user.phone }}</a>  
+                            |  
+                            <a href="https://wa.me/{{ item.user.phone }}" class="btn-whatsapp" target="_blank">WhatsApp</a>
+                        </p>
+                        <p class="price">
+                            Offer Price: ₹{{ item.offer_price }}  
+                            <span class="original-price">₹{{ item.actual_price }}</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

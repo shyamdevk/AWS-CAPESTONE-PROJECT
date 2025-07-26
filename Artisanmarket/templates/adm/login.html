@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .login-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            width: 350px;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #343a40;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #495057;
+            font-size: 14px;
+        }
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        .button {
+            width: 100%;
+            padding: 10px;
+            background-color:rgb(23, 14, 91);
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .button:hover {
+            background-color:rgb(12, 10, 94);
+        }
+        .error-message {
+            color: red;
+            font-size: 14px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Admin Login</h2>
+        <!-- Display error message if login fails -->
+        <div class="error-message">
+            </div>
+         <!-- Admin Login Form -->
+        <form method="POST" action="{% url 'adLogin' %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="txtUname">Username</label>
+                <input type="text" id="txtUname" name="txtUname" placeholder="Enter your username" required>
+            </div>
+            <div class="form-group">
+                <label for="txtPassword">Password</label>
+                <input type="password" id="txtPassword" name="txtPassword" placeholder="Enter your password" required>
+            </div>
+            <button type="submit" class="button">Login</button>
+            <div>
+            {% if error %}    
+                <p style="color: red;">{{error}}</p>
+            {% endif %}    
+        </form>
+    </div>
+</body>
+</html>

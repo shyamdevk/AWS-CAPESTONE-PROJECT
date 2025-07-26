@@ -1,0 +1,83 @@
+<!doctype html> 
+<html lang="en"> 
+<head> 
+    <!-- Required meta tags --> 
+    <meta charset="utf-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> 
+    {% load static %} 
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}"> 
+    <title>Product Upload</title> 
+</head> 
+<body> 
+
+<div class="container mt-5">
+    <h2 class="mb-4">Product Upload</h2>
+    <form method="POST" enctype="multipart/form-data" action="/updateStd/{{products.id}}">
+        {% csrf_token %}
+        
+        <!-- Product Name -->
+        <div class="form-group">
+            <label for="productName">Product Name</label>
+            <input type="text" class="form-control" id="productName" name="productname"  value="{{ products.productname }}" required>
+        </div>
+        
+        <!-- Product Details -->
+        <div class="form-group">
+            <label for="productDetails">Product Details</label>
+            <textarea class="form-control" id="productDetails" name="productdetails" rows="3"   maxlength="100"  required>{{ productdetails }}</textarea>
+        </div>
+        
+        <!-- Actual Price -->
+        <div class="form-group">
+            <label for="actualPrice">Actual Price</label>
+            <input type="number" class="form-control" id="actualPrice" name="actual_price" placeholder="Enter actual price"value="{{ products.actual_price }}" required>
+        </div>
+        
+        <!-- Offer Price -->
+        <div class="form-group">
+            <label for="offerPrice">Offer Price</label>
+            <input type="number" class="form-control" id="offerPrice" name="offer_price" placeholder="Enter offer price"value="{{ products.offer_price }}" required>
+        </div>
+        
+        <!-- Category -->
+        <div class="form-group">
+            <label for="category">Category</label>
+            <input type="text" class="form-control" id="category" name="category" placeholder="Enter category" maxlength="5" value="{{ products.category }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="type"><i class="fas fa-th"></i> Product Type</label>
+            <select class="form-control" id="type" name="type" required>
+                <option value="" disabled selected>Select a product type</option>
+                <option value="cakes">Cakes</option>
+                <option value="craft">Craft Items</option>
+                <option value="mehandi">Mehandi</option>
+            </select>
+        </div>
+        <!-- Quantity -->
+        <div class="form-group">
+            <label for="quantity">Quantity</label>
+            <input type="number" class="form-control" id="quantity" name="quantity" placeholder="Enter quantity" value="{{ products.quantity }}">
+        </div>
+        
+        <!-- File Inputs -->
+        <div class="form-group">
+            <label for="file1">Upload Image 1</label>
+            <input type="file" class="form-control-file" id="file1" name="image1" accept="image/*" value="{{ products.image1 }}" required>
+        </div>
+        <div class="form-group">
+            <label for="file2">Upload Image 2</label>
+            <input type="file" class="form-control-file" id="file2" name="image2" accept="image/*" value="{{ products.image2 }}" required>
+        </div>
+        <div class="form-group">
+            <label for="file3">Upload Image 3</label>
+            <input type="file" class="form-control-file" id="file3" name="image3" accept="image/*" value="{{ products.image3 }}" required>
+        </div>
+        
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary">Upload</button>
+    </form>
+</div>
+
+</body> 
+</html>

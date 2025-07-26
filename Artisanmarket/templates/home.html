@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <h2>Add a Product</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <label for="productname">Product Name:</label>
+        <input type="text" name="productname" required><br>
+
+        <label for="productdetails">Product Details:</label>
+        <textarea name="productdetails" required></textarea><br>
+
+        <label for="actual_price">Actual Price:</label>
+        <input type="number" name="actual_price" required><br>
+
+        <label for="offer_price">Offer Price:</label>
+        <input type="number" name="offer_price" required><br>
+
+        <label for="category">Category:</label>
+        <input type="text" name="category" required><br>
+
+        <label for="quantity">Quantity:</label>
+        <input type="number" name="quantity" required><br>
+
+        <label for="image1">Image 1:</label>
+        <input type="file" name="image1"><br>
+
+        <label for="image2">Image 2:</label>
+        <input type="file" name="image2"><br>
+
+        <label for="image3">Image 3:</label>
+        <input type="file" name="image3"><br>
+
+        <button type="submit">Add Product</button>
+
+        <h2>Your Products</h2>
+        <ul>
+            {% for product in products %}
+                <li>{{ product.productname }} - {{ product.category }} - ${{ product.offer_price }}</li>
+            {% empty %}
+                <li>No products found.</li>
+            {% endfor %}
+        </ul>
+
+    </form>
+</head>
+<body>
+<h1></h1>
+</body>
+</html>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kesel Product Grid</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <h1>Discover Our Product</h1>
+            <nav>
+                <ul>
+                    <li><a href="#">ALL CATEGORIES [341]</a></li>
+                    <li><a href="#">HOME [94]</a></li>
+                    <li><a href="#">OFFICE [59]</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="product-grid">
+            <div class="product">
+                <img src="images/product1.jpg" alt="Minimalist Zen Chair">
+                <div class="product-info">
+                    <h2>Minimalist Zen</h2>
+                    <p>$580.00</p>
+                    <button>+</button>
+                </div>
+            </div>
+
+            <div class="product">
+                <img src="images/product2.jpg" alt="Contemporary Chair">
+                <div class="product-info">
+                    <h2>Contemporary</h2>
+                    <p>$460.00</p>
+                    <button>+</button>
+                </div>
+            </div>
+
+            <div class="product">
+                <img src="images/product3.jpg" alt="Pampero Chair">
+                <div class="product-info">
+                    <h2>Pampero</h2>
+                    <p>$599.00</p>
+                    <button>+</button>
+                </div>
+            </div>
+
+            </section>
+
+        <section class="recent-products">
+            <h2>Recent Product</h2>
+            <div class="product">
+                <img src="images/product4.jpg" alt="Comfy Cussion">
+                <div class="product-info">
+                    <h2>Comfy Cussion</h2>
+                    <p>$900.00</p>
+                    <button>+</button>
+                </div>
+            </div>
+
+            <div class="product">
+                <img src="images/product5.jpg" alt="Stance Dining Chair">
+                <div class="product-info">
+                    <h2>Stance Dining</h2>
+                    <p>$560.00</p>
+                    <button>+</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <ul class="footer-nav">
+                <li><a href="#"><i class="fas fa-home"></i></a></li>
+                <li><a href="#"><i class="fas fa-shopping-cart"></i></a></li>
+                <li><a href="#"><i class="fas fa-heart"></i></a></li>
+                <li><a href="#"><i class="fas fa-user"></i></a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+
+</body>
+</html>

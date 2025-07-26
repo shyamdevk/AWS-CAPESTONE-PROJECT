@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Registration Form</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+.container {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 350px;
+}
+h2 {
+  text-align: center;
+  color: #333;
+}
+form {
+  display: flex;
+  flex-direction: column;
+}
+label {
+  margin: 10px 0 5px;
+  font-weight: bold;
+}
+input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+}
+input:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 5px rgba(102, 126, 234, 0.5);
+}
+.error {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+}
+button {
+  background: #667eea;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 15px;
+  font-size: 16px;
+}
+button:hover {
+  background: #5648a1;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h2>Register</h2>
+  <form id="registrationForm" action="/register/" method="post">
+    {% csrf_token %}
+    <label for="username">User Name:</label>
+    <input type="text" id="username" name="username" required>
+    <span class="error" id="usernameError"></span>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required>
+    <span class="error" id="emailError"></span>
+
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" required>
+    <span class="error" id="passwordError"></span>
+
+    <label for="confirm_password">Confirm Password:</label>
+    <input type="password" id="confirm_password" name="confirm_password" required>
+    <span class="error" id="confirmPasswordError"></span>
+
+    <label for="role">Role:</label>
+    <input type="text" id="role" name="role" required>
+    <span class="error" id="roleError"></span>
+
+    <label for="contact">Contact Number:</label>
+    <input type="number" id="contact" name="contact" required>
+    <span class="error" id="contactError"></span>
+
+    <button type="submit">Submit</button>
+  </form>
+</div>
+
+<script>
+    document.getElementById('registrationForm').addEventListener('submit', function(event) {
+        let isValid = true;
+        function setError(id, message) {
+            document.getElementById(id).textContent = message;
+            isValid = false;
+        }
+        function clearError(id) {
+            document.getElementById(id).textContent = "";
+        }
+        
+        const username = document.getElementById('username').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirm_password').value;
+        const role = document.getElementById('role').value.trim();
+        const contact = document.getElementById('contact').value.trim();
+
+        if (!username) setError('usernameError', 'Username is required'); else clearError('usernameError');
+        if (!email.match(/^\S+@\S+\.\S+$/)) setError('emailError', 'Enter a valid email'); else clearError('emailError');
+        if (password.length < 6) setError('passwordError', 'Password must be at least 6 characters'); else clearError('passwordError');
+        if (password !== confirmPassword) setError('confirmPasswordError', 'Passwords do not match'); else clearError('confirmPasswordError');
+        if (!role) setError('roleError', 'Role is required'); else clearError('roleError');
+        if (!contact.match(/^\d{10}$/)) setError('contactError', 'Enter a valid 10-digit number'); else clearError('contactError');
+        
+        if (!isValid) event.preventDefault();
+    });
+</script>
+</body>
+</html>

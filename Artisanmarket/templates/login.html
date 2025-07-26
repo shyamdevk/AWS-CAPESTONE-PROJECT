@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link href="{% static 'css/bootstrap.min.css' %}" type="text/css" rel="stylesheet">
+    <title>Login - Shopcart</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #FFDEE9, #B5FFFC);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            overflow: hidden;
+            animation: fadeInBackground 1.5s ease-in-out;
+        }
+
+        @keyframes fadeInBackground {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .card {
+            width: 100%;
+            max-width: 420px;
+            border-radius: 20px;
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            transform: translateY(50px);
+            opacity: 0;
+            animation: fadeInUp 1s ease-out forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #FF9A9E, #FAD0C4);
+            color: white;
+            text-align: center;
+            font-size: 28px;
+            font-weight: bold;
+            padding: 25px;
+            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-body {
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: inset 0px 4px 25px rgba(0, 0, 0, 0.05);
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: #FF6F61;
+            animation: fadeInLabel 1s ease-in-out;
+        }
+
+        @keyframes fadeInLabel {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .form-control {
+            border-radius: 10px;
+            padding: 12px;
+            border: 2px solid #ddd;
+            transition: all 0.3s ease-in-out;
+            font-size: 16px;
+        }
+
+        .form-control:focus {
+            border-color: #FF6F61;
+            box-shadow: 0 0 12px rgba(255, 111, 97, 0.6);
+            transform: scale(1.02);
+        }
+
+        .btn-primary {
+            width: 100%;
+            border-radius: 25px;
+            padding: 15px;
+            background: linear-gradient(135deg, #FF758C, #FF7EB3);
+            border: none;
+            color: white;
+            font-weight: bold;
+            transition: transform 0.3s ease, background 0.3s ease;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #FF7EB3, #FF9A9E);
+            transform: scale(1.05);
+        }
+
+        .links {
+            text-align: center;
+            margin-top: 20px;
+            opacity: 0;
+            animation: fadeInLinks 1s ease-in-out forwards;
+            animation-delay: 1s;
+        }
+
+        @keyframes fadeInLinks {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .links a {
+            text-decoration: none;
+            color: #FF6F61;
+            font-weight: 600;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .links a:hover {
+            text-decoration: underline;
+            color: #E75C4E;
+        }
+
+        .error-message {
+            color: #E57373;
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+            animation: fadeInError 0.5s ease-in-out;
+        }
+
+        @keyframes fadeInError {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="card-header">✨ Sign In ✨</div>
+        <div class="card-body">
+            <form method="POST" action="/DBLogin/">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="email">📧 Username</label>
+                    <input type="text" name="txtEmail" class="form-control" id="email" placeholder="Enter Email">
+                </div>
+                <div class="form-group mt-3">
+                    <label for="Password">🔒 Password</label>
+                    <input type="password" name="txtPassword" class="form-control" id="Password" placeholder="Enter Password">
+                </div>
+                {% if error %}
+                <p class="error-message">⚠️ {{ error }}</p>
+                {% endif %}
+                <button type="submit" class="btn btn-primary mt-3">🚀 Login</button>
+            </form>
+            <div class="links">
+                <a href="/registration/">📝 Register</a> | 
+                <a href="/forgot-password/">🔑 Forgot Password?</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

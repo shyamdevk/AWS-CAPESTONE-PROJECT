@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <title>Product Listing</title>
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+            padding-top: 20px;
+        }
+
+        nav {
+            background-color: #343a40;
+            padding: 10px 20px;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 18px;
+            margin-right: 20px;
+        }
+
+        nav a:hover {
+            color: #ff69b4;
+        }
+
+        .container {
+            margin-top: 30px;
+        }
+
+        .card {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .card-img-top {
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .card-img-top:hover {
+            transform: scale(1.05);
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .card-text {
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .card-text strong {
+            color: #333;
+        }
+
+        .btn {
+            border-radius: 25px;
+            padding: 8px 20px;
+            font-size: 16px;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            border: none;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .d-flex a {
+            margin-top: 10px;
+            text-align: center;
+            width: 100%;
+        }
+
+        .d-flex {
+            display: flex;
+            justify-content: space-between;
+            flex-direction: column;
+        }
+
+        @media (max-width: 768px) {
+            .d-flex {
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-around;
+            }
+
+            .card-body {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="/productupload/">ADD NEW</a>
+</nav>
+
+<div class="container">
+    <div class="row">
+        {% for item in filename %}
+        {% if item.types == "cakes" or item.types == "craft" %}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="{% static 'media/' %}{{ item.image1 }}" class="card-img-top" alt="Product Image">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ item.productname }}</h5>
+                        <p class="card-text">{{ item.productdetails }}</p>
+                        <p class="card-text"><strong>Actual Price:</strong> <strike>${{ item.actual_price }}</strike></p>
+                        <p class="card-text"><strong>Offer Price:</strong> ${{ item.offer_price }}</p>
+                        <p class="card-text"><strong>Category:</strong> {{ item.category }}</p>
+                        <p class="card-text"><strong>Quantity:</strong> {{ item.quantity }}</p>
+                        <div class="d-flex">
+                            <a href="/delFile/{{ item.id }}" class="btn btn-danger">Delete</a>
+                            <a href="/edit/{{ item.id }}" class="btn btn-primary">Edit</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+
+
+<div class="container">
+  <div class="row">
+      {% for item in filename %}
+          {% if item.types == "mehandi" %}
+          <div class="col-md-4 mb-4">
+              <div class="card">
+                  <img src="{% static 'media/' %}{{ item.image1 }}" class="card-img-top" alt="Mehandi Design">
+                  <div class="card-body">
+                      <p class="card-text"><strong>Contact:</strong> {{ item.user.phone }}</p>
+                      <p class="card-text"><strong>Price:</strong> ${{ item.offer_price }}</p>
+                      <div class="d-flex">
+                          <a href="/delFile/{{ item.id }}" class="btn btn-danger">Delete</a>
+                          <a href="/edit/{{ item.id }}" class="btn btn-primary">Edit</a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          {% endif %}
+      {% endfor %}
+  </div>
+</div>
+
+</body>
+</html>
