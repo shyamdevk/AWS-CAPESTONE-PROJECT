@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-!a!$d8bek$y$(l!manncgj4i!15ferln23!o-jt@e8qxqa(ig)'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -49,6 +49,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+CSRF_TRUSTED_ORIGINS = [
+    "https://mysample.xyz",
+    "https://www.mysample.xyz",  # Optional, only if you use www
 ]
 
 ROOT_URLCONF = 'art.urls'
@@ -79,9 +83,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'art',
-        'USER': 'root', 
-'PASSWORD': 'yayi@123liyafathima',
-'HOST': 'localhost', 
+        'USER': 'admin', 
+'PASSWORD': '123456789',
+'HOST': 'database-1.c0rgiwca00s9.us-east-1.rds.amazonaws.com', 
 'PORT': '3306',
     }
 }
@@ -130,7 +134,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 STATIC_URL = 'static/'
-STATICFILES_DIRS=[os.path.join(BASE_DIR,'Artisianmarket/static')]
+#STATICFILES_DIRS=[os.path.join(BASE_DIR,'Artisianmarket/static')]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 MEDIA_URL = '/Artisianmarket/static/media/'  
 MEDIA_ROOT = os.path.join(BASE_DIR, 'Artisianmarket/static/media')
 
