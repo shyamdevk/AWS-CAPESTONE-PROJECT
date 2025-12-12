@@ -22,6 +22,9 @@ A **custom domain** is managed via **Route 53**, secured using **ACM SSL certifi
 
 ## 🏗️ **Architecture Summary**
 
+
+![Proj-img](https://github.com/shyamdevk/AWS-CAPESTONE-PROJECT/blob/images/archi.png)
+
 The infrastructure includes:
 
 * **VPC with 2 public + 4 private subnets**
@@ -1163,5 +1166,269 @@ Now your ALB has:
 Your website can now be accessed securely with **HTTPS**.
 
 ---
+
+# 🟦 **Step 7: Setting Up CloudFront in Front of the Load Balancer**
+
+Amazon **CloudFront** is a **Content Delivery Network (CDN)** that improves the speed, security, and reliability of your application.
+
+We place CloudFront **in front of the ALB** so users worldwide get faster performance.
+
+---
+
+## 🌍 **Why Use CloudFront?**
+
+CloudFront provides several benefits:
+
+### ✔ Faster performance globally
+
+Your website loads quicker because CloudFront has servers around the world.
+
+### ✔ Extra security
+
+CloudFront works with AWS Shield and can integrate with AWS WAF to protect your site from attacks.
+
+### ✔ HTTPS support
+
+CloudFront uses your **ACM SSL certificate** to provide secure HTTPS traffic.
+
+### ✔ Caching
+
+CloudFront caches static and dynamic content to reduce ALB load and speed up responses.
+
+---
+
+# 🛠️ **Creating a CloudFront Distribution**
+
+### **1️⃣ Open CloudFront Console**
+
+Go to **AWS CloudFront → Create Distribution**
+
+---
+
+### **2️⃣ Configure the Origin**
+
+Under **Origin Settings**:
+
+* **Origin Domain:**
+  Paste your **ALB DNS name**, for example:
+
+  ```
+  myapp-alb-1234567890.us-east-1.elb.amazonaws.com
+  ```
+
+This tells CloudFront to forward all user requests to your ALB.
+
+---
+
+### Optional Features:
+
+* You can integrate AWS **WAF** for more security
+* You can add your **custom domain** during creation *or later*
+  
+![Proj-img](https://github.com/shyamdevk/AWS-CAPESTONE-PROJECT/blob/images/cf.png)
+
+---
+
+# 🟩 **3️⃣ Finish Creating the Distribution**
+
+Click **Create Distribution** and wait a few minutes until its status becomes:
+
+```
+Enabled
+```
+![Proj-img](https://github.com/shyamdevk/AWS-CAPESTONE-PROJECT/blob/images/cf1.png)
+
+---
+
+# 📝 **4️⃣ Add Your Custom Domain to CloudFront**
+
+After the distribution is created:
+
+1. Select your CloudFront distribution
+2. Go to **Settings → Alternate Domain Names (CNAMEs)**
+
+![Proj-img](https://github.com/shyamdevk/AWS-CAPESTONE-PROJECT/blob/images/cf2.png)
+
+4. Add your domain:
+
+   ```
+   mysample.xyz
+   ```
+
+---
+
+![Proj-img](https://github.com/shyamdevk/AWS-CAPESTONE-PROJECT/blob/images/cf3.png)
+
+# 🔐 **5️⃣ Attach Your SSL Certificate**
+
+![Proj-img](https://github.com/shyamdevk/AWS-CAPESTONE-PROJECT/blob/images/cf4.png)
+
+In the same settings:
+
+* Choose the **ACM certificate** you created earlier
+* This enables secure **HTTPS** on CloudFront
+
+![Proj-img](https://github.com/shyamdevk/AWS-CAPESTONE-PROJECT/blob/images/cg5.png)
+
+---
+
+# 🎉 **6️⃣ Test Your Domain**
+
+Now open your domain:
+
+```
+https://mysample.xyz
+```
+![Proj-img](https://github.com/shyamdevk/AWS-CAPESTONE-PROJECT/blob/images/final.png)
+
+Your website should load through:
+
+**CloudFront → ALB → EC2 → Django**
+
+
+---
+
+# 🟦 **STEP 8:Monitoring Using CloudWatch and SNS**
+
+Monitoring is essential in production because you must know **immediately** when something goes wrong.
+AWS gives you two tools for this:
+
+* **CloudWatch** → Watches your AWS resources
+* **SNS (Simple Notification Service)** → Sends alerts to your email or phone
+
+Together, they form a **complete monitoring system**.
+
+---
+
+# 🟩 **STEP 8.1: CloudWatch Collects Metrics**
+
+CloudWatch automatically collects metrics from AWS services like:
+
+* EC2
+* RDS
+* ALB (Load Balancer)
+* Auto Scaling Group
+* S3
+* Lambda
+* API Gateway
+
+Examples of important metrics:
+
+| Service | Metric             | Meaning                               |
+| ------- | ------------------ | ------------------------------------- |
+| EC2     | CPU Utilization    | Server under heavy load               |
+| RDS     | Free Storage Space | Database is running out of space      |
+| ALB     | Unhealthy Hosts    | App servers are failing health checks |
+| ASG     | Desired Capacity   | Scaling up/down events                |
+
+CloudWatch updates these metrics every **1 minute or 5 minutes** depending on the service.
+
+---
+
+# 🟩 **STEP 8.2: Create CloudWatch Alarms**
+
+A **CloudWatch Alarm** tells AWS:
+
+> "If this metric crosses a certain value, send me an alert."
+
+### Example Alarms:
+
+* CPU > 80% for 5 minutes
+* RDS storage less than 1 GB
+* ALB has 0 healthy EC2 instances
+* Too many 5xx errors from your app
+
+### How to create an alarm:
+
+1. Open **CloudWatch Console**
+2. Go to **Alarms → Create alarm**
+3. Choose a metric (e.g., EC2 → CPU Utilization)
+4. Set a threshold (example: above 80%)
+5. Choose **Alarm State** = **ALARM**
+6. Attach an **SNS notification** (next step)
+
+---
+
+# 🟩 **STEP 8.3: Create an SNS Topic (Alert Channel)**
+
+SNS is used to send notifications like email or SMS.
+
+### Steps:
+
+1. Go to **SNS Console**
+2. Click **Create Topic**
+3. Choose **Standard**
+4. Name it (example: `myapp-alerts`)
+5. Create a **subscription**:
+
+   * Protocol: **Email** or **SMS**
+   * Endpoint: your email or phone number
+
+SNS will send a **confirmation message**.
+You must open the email or SMS and **confirm the subscription**.
+
+---
+
+# 🟩 **STEP 8.4: Connect the Alarm to the SNS Topic**
+
+Now go back to your CloudWatch alarm:
+
+1. Choose **ALARM → Configure actions**
+2. Select **Send notification to SNS topic**
+3. Choose your topic (e.g., `myapp-alerts`)
+4. Save and create the alarm
+
+Now your alarm is fully connected.
+
+---
+
+# 🟩 **STEP 8.5: When Something Goes Wrong → Alert is Sent**
+
+If the alarm enters the **ALARM** state:
+
+### Example:
+
+* EC2 CPU stays above 80% for 5 minutes
+
+CloudWatch → Sends signal → SNS → Sends email/SMS to you.
+
+### Example email:
+
+```
+ALARM: "HighCPUAlarm"
+EC2 Instance i-0abcd1234 is above 80% CPU
+Time: 12:45 PM
+```
+
+You can now immediately check and fix your server.
+
+---
+
+# 🟩 **STEP 8.6: You Take Action Quickly**
+
+CloudWatch tells you WHAT is wrong.
+SNS tells you WHEN it goes wrong.
+
+This helps you:
+
+* Fix issues instantly
+* Reduce downtime
+* Keep the application healthy
+* Avoid performance problems
+
+---
+Here is a **clean, simple, beginner-friendly conclusion written in paragraph form** for your README.md.
+You can paste this directly into your final README.
+
+---
+
+# 🟦 **Conclusion**
+
+This project demonstrates the complete deployment of a production-ready Django application on AWS using modern cloud best practices. Starting from launching an EC2 instance and configuring Django, Gunicorn, and Nginx, we built a secure and reliable application server. We connected the application to a managed MySQL database using Amazon RDS and ensured smooth static file handling using Nginx. By creating an AMI and using it in a Launch Template, we enabled Auto Scaling to automatically adjust the number of EC2 instances based on demand, all running behind an Application Load Balancer for high availability and smooth traffic distribution.
+
+To make the application accessible through a custom domain, we migrated DNS from GoDaddy to Route 53 and secured the website using a free SSL certificate from AWS Certificate Manager. We further improved global performance and security by placing CloudFront in front of the Load Balancer, ensuring users experience low latency and HTTPS everywhere. Logs are securely stored in S3 through a VPC Endpoint, preventing any exposure to the public internet.
+
+Finally, using CloudWatch and SNS, we added real-time monitoring and alerting to ensure the system remains healthy and responsive. With these components working together, the entire infrastructure becomes secure, scalable, highly available, and production-ready—capable of handling real-world workloads with confidence and reliability.
+
 
 
