@@ -210,3 +210,130 @@ This helps when:
 The above diagram illustrates the architectural layout of the VPC and its associated
 resources.
 
+# 🟦 **Step 2: RDS Configuration for MySQL**
+
+In this step, we create a **managed MySQL database** using **Amazon RDS**.
+RDS takes care of backups, updates, security, and high availability — perfect for production use.
+
+---
+
+## 🗄️ **Why use RDS instead of installing MySQL on EC2?**
+
+* ✔ Automatically managed by AWS
+* ✔ Built-in backups
+* ✔ High availability (Multi-AZ)
+* ✔ Better performance
+* ✔ More secure
+
+---
+
+## 🛠️ **How to Create the RDS MySQL Database (Simple Steps)**
+
+### **1️⃣ Open RDS**
+
+* Go to the AWS Console
+* Search **RDS**
+* Click **Create Database**
+
+---
+
+### **2️⃣ Choose the Engine**
+
+* Select **MySQL**
+* Choose the **latest version** (example: MySQL 8.0)
+
+---
+
+### **3️⃣ Choose Creation Method**
+
+* Choose **Standard Create**
+* Select **Production Template**
+
+  * This provides better performance & reliability
+
+---
+
+### **4️⃣ Basic Settings**
+
+Fill in:
+
+| Setting                | Example                        |
+| ---------------------- | ------------------------------ |
+| DB Instance Identifier | `sample-prod-db`               |
+| Master Username        | `admin`                        |
+| Password               | Strong password (store safely) |
+
+---
+
+### **5️⃣ Instance Size**
+
+Choose an instance type based on your needs:
+
+* Recommended: **db.t3.medium**
+
+This offers a balance of performance and cost.
+
+---
+
+### **6️⃣ Storage**
+
+* Start with **20 GB**
+* Enable **Storage Autoscaling** (grows automatically when needed)
+
+---
+
+### **7️⃣ High Availability (Important for Production)**
+
+* Enable **Multi-AZ Deployment** → RDS will create a standby replica
+* Turn on **Automatic Backups** → e.g., 7-day retention
+
+---
+
+## 🔐 **8️⃣ Connectivity (Very Important)**
+
+### **✔ Choose the same VPC as your EC2 servers**
+
+This ensures your app and database are on the same network.
+
+### **✔ Use a *Private Subnet Group***
+![Proj-img](https://github.com/shyamdevk/AWS-CAPESTONE-PROJECT/blob/images/sub1.png)
+![Proj-img](https://github.com/shyamdevk/AWS-CAPESTONE-PROJECT/blob/images/sub2.png)
+This keeps your database **not exposed to the internet**.
+
+### **✔ Configure Security Group**
+
+Allow **port 3306** (MySQL) only from your **EC2's security group**.
+
+This prevents unknown IPs from accessing your DB.
+
+---
+
+## 🔑 **9️⃣ Authentication Options**
+
+* Use **Password Authentication**
+* (Optional) You can use **IAM authentication** later
+
+---
+
+## 🚀 **🔟 Launch the Database**
+
+* Click **Create Database**
+* Wait until status becomes **Available**
+
+### 📌 Copy the **Endpoint URL**
+
+Example:
+
+```
+sample-prod-db.cwfcqugwafxx.us-east-1.rds.amazonaws.com
+```
+
+You will paste this inside your Django `settings.py` under:
+
+```python
+DATABASES = { ... }
+```
+
+---
+
+
