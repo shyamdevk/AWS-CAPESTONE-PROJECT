@@ -116,10 +116,6 @@ To simulate a **real production deployment**, covering:
 * Best practices for cloud application hosting
 
 ---
-Here is a **simple, clean, decorated, beginner-friendly README section** for your AWS Service Configuration.
-You can **paste this directly into your README.md**.
-
----
 
 # 🚀 **AWS Service Configuration**
 
